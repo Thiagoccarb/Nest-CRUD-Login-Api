@@ -5,20 +5,21 @@ import {
   PrimaryKey,
   AllowNull,
   Unique,
+  DataType,
 } from 'sequelize-typescript';
 
 @Table
 export class User extends Model {
-  @Column
   @PrimaryKey
+  @Column(DataType.STRING)
   id: string;
 
-  @Column
   @AllowNull(false)
-  @Unique(false)
+  @Unique(true)
+  @Column(DataType.STRING)
   email: string;
 
-  @Column
   @AllowNull(false)
+  @Column(DataType.STRING)
   hash: string;
 }

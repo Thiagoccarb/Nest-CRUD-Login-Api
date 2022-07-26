@@ -4,11 +4,11 @@ import * as argon from 'argon2';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-@Controller('users')
+@Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
+  @Post('users')
   async create(@Body() user: CreateUserDto) {
     try {
       const hash = await argon.hash(user.password);
@@ -29,6 +29,11 @@ export class UsersController {
         throw new ForbiddenException('Credentials taken');
       }
     }
+  }
+
+  @Post('login')
+  async signIn(@Body() user: CreateUserDto) {
+    return this.usersService.signIn(user);
   }
 
   // @Get()

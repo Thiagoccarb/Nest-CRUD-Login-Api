@@ -11,7 +11,7 @@ export class UsersService {
     private userModel: typeof User,
   ) {}
 
-  create(user: CreateUserDto): void {
-    return this.create(user);
+  async create(user: CreateUserDto) {
+    return this.userModel.create({ ...user });
   }
 }

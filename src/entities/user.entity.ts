@@ -19,7 +19,7 @@ export class User extends Model {
   @AllowNull(false)
   @Unique(true)
   @Column(DataType.STRING)
-  usrname: string;
+  username: string;
 
   @AllowNull(false)
   @Column(DataType.STRING)

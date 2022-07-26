@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, ForbiddenException } from '@nestjs/common';
 import * as argon from 'argon2';
 
 import { UsersService } from './users.service';
@@ -10,11 +10,25 @@ export class UsersController {
 
   @Post()
   async create(@Body() user: CreateUserDto) {
-    const hash = await argon.hash(user.password);
-    return this.usersService.create({
-      email: user.email,
-      hash,
-    });
+    try {
+      const hash = await argon.hash(user.password);
+      const newUser = await this.usersService.create({
+        email: user.email,
+        hash,
+      });
+
+      const displayedUserData = {
+        id: newUser.id,
+        email: newUser.email,
+        created_at: newUser.createdAt,
+      };
+
+      return displayedUserData;
+    } catch (err) {
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        throw new ForbiddenException('Credentials taken');
+      }
+    }
   }
 
   // @Get()

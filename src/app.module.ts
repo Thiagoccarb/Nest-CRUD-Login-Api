@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ConfigModule } from '@nestjs/config';
+
 import { User } from './entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -17,6 +19,9 @@ import { UsersModule } from './users/users.module';
       synchronize: true,
     }),
     UsersModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
   ],
 })
 export class AppModule {}

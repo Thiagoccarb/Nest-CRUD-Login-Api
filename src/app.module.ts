@@ -3,8 +3,10 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 
 import { User } from './entities/user.entity';
+import { Reminder } from './entities/reminder.entity';
 import { UsersModule } from './users/users.module';
 import { JwtStrategy } from './jwtStrategy/jwt.strategy';
+import { RemindersModule } from './reminders/reminders.module';
 
 @Module({
   imports: [
@@ -15,7 +17,7 @@ import { JwtStrategy } from './jwtStrategy/jwt.strategy';
       username: 'root',
       password: '12345',
       database: 'fumico-dev',
-      models: [User],
+      models: [User, Reminder],
       autoLoadModels: true,
       synchronize: true,
     }),
@@ -23,6 +25,7 @@ import { JwtStrategy } from './jwtStrategy/jwt.strategy';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    RemindersModule,
   ],
   providers: [JwtStrategy],
 })

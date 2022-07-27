@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { User } from './entities/user.entity';
 import { UsersModule } from './users/users.module';
+import { JwtStrategy } from './jwtStrategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -23,5 +24,6 @@ import { UsersModule } from './users/users.module';
       isGlobal: true,
     }),
   ],
+  providers: [JwtStrategy],
 })
 export class AppModule {}

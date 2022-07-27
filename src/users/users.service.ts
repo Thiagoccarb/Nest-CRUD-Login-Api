@@ -49,4 +49,8 @@ export class UsersService {
     });
     return { token };
   }
+
+  async findAll() {
+    return this.userModel.findAll({ raw: true });
+  }
 }

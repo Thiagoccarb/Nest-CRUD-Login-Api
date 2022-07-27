@@ -25,7 +25,7 @@ export class Reminder extends Model {
 
   @ForeignKey(() => User)
   @AllowNull(false)
-  @Column(DataType.NUMBER)
+  @Column(DataType.INTEGER)
   userId: number;
 
   @BelongsTo(() => User)

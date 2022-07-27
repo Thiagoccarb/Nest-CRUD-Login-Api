@@ -1,8 +1,18 @@
-import { Controller, Post, Body, ForbiddenException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  ForbiddenException,
+  HttpCode,
+  HttpStatus,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
 import * as argon from 'argon2';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller()
 export class UsersController {
@@ -31,28 +41,15 @@ export class UsersController {
     }
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Body() user: CreateUserDto) {
     return this.usersService.signIn(user);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.usersService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.usersService.remove(+id);
-  // }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('users')
+  findAll() {
+    return this.usersService.findAll();
+  }
 }

@@ -4,8 +4,10 @@ import {
   Table,
   AllowNull,
   Unique,
+  HasMany,
   DataType,
 } from 'sequelize-typescript';
+import { Reminder } from './reminder.entity';
 
 @Table
 export class User extends Model {
@@ -17,4 +19,7 @@ export class User extends Model {
   @AllowNull(false)
   @Column(DataType.STRING)
   hash: string;
+
+  @HasMany(() => Reminder)
+  reminders: Reminder[];
 }

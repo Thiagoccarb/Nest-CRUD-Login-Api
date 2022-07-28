@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -48,12 +49,24 @@ export class RemindersController {
 
   @Get(':id')
   async findOne(@Param('id') id: string, @GetUser() user: User) {
-    return this.remindersService.findOne(Number(id), Number(user.id));
+    const existingUser = await this.remindersService.findOne(
+      Number(id),
+      Number(user.id),
+    );
+    if (!existingUser) {
+      throw new NotFoundException('user not found');
+    }
+    return existingUser;
   }
 
   @Get()
   async findAll(@GetUser() user: User) {
-    return this.remindersService.findAll(Number(user.id));
+    const reminders = await this.remindersService.findAll(Number(user.id));
+    if (!reminders.length) {
+      throw new NotFoundException(
+        'sorry, no data found related to the requested user',
+      );
+    }
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

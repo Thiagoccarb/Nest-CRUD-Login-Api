@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -51,5 +54,11 @@ export class RemindersController {
   @Get()
   async findAll(@GetUser() user: User) {
     return this.remindersService.findAll(Number(user.id));
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':id')
+  async removeReminder(@Param('id') id: string, @GetUser() user: User) {
+    return this.remindersService.removeReminder(Number(id), Number(user.id));
   }
 }

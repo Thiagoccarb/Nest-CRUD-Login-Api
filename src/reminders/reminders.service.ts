@@ -14,16 +14,23 @@ export class RemindersService {
     return this.reminderModel.create({ ...reminder });
   }
 
-  async findOne(id: number) {
-    return this.reminderModel.findOne({ where: { id }, raw: true });
+  async findOne(id: number, userId: number) {
+    return this.reminderModel.findOne({ where: { id, userId }, raw: true });
   }
 
-  async selectReminder(id: number) {
+  async findAll(userId: number) {
+    return this.reminderModel.findAll({ where: { userId }, raw: true });
+  }
+
+  async selectReminder(id: number, userId: number) {
     await this.reminderModel.update(
       { status: false },
-      { where: { status: true } },
+      { where: { status: true, userId } },
     );
-    await this.reminderModel.update({ status: true }, { where: { id } });
-    return this.findOne(id);
+    await this.reminderModel.update(
+      { status: true },
+      { where: { id, userId } },
+    );
+    return this.findOne(id, userId);
   }
 }

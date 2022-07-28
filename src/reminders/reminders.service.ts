@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { Reminder } from 'src/entities/reminder.entity';
@@ -10,11 +8,22 @@ export class RemindersService {
   constructor(
     @InjectModel(Reminder)
     private reminderModel: typeof Reminder,
-    private jwt: JwtService,
-    private config: ConfigService,
   ) {}
 
   async create(reminder: Partial<Reminder>) {
     return this.reminderModel.create({ ...reminder });
+  }
+
+  async findOne(id: number) {
+    return this.reminderModel.findOne({ where: { id }, raw: true });
+  }
+
+  async selectReminder(id: number) {
+    await this.reminderModel.update(
+      { status: false },
+      { where: { status: true } },
+    );
+    await this.reminderModel.update({ status: true }, { where: { id } });
+    return this.findOne(id);
   }
 }

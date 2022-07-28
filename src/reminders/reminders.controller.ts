@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/decorators/getUserData.decorator';
 import { User } from 'src/entities/user.entity';
@@ -28,5 +35,10 @@ export class RemindersController {
     };
 
     return displayedReminderData;
+  }
+
+  @Patch(':id')
+  async selectReminder(@Param('id') id: string) {
+    return this.remindersService.selectReminder(Number(id));
   }
 }

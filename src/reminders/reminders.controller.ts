@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Post,
@@ -38,7 +39,17 @@ export class RemindersController {
   }
 
   @Patch(':id')
-  async selectReminder(@Param('id') id: string) {
-    return this.remindersService.selectReminder(Number(id));
+  async selectReminder(@Param('id') id: string, @GetUser() user: User) {
+    return this.remindersService.selectReminder(Number(id), Number(user.id));
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string, @GetUser() user: User) {
+    return this.remindersService.findOne(Number(id), Number(user.id));
+  }
+
+  @Get()
+  async findAll(@GetUser() user: User) {
+    return this.remindersService.findAll(Number(user.id));
   }
 }

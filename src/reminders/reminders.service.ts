@@ -33,4 +33,8 @@ export class RemindersService {
     );
     return this.findOne(id, userId);
   }
+
+  async removeReminder(id: number, userId: number) {
+    return this.reminderModel.destroy({ where: { userId, id } });
+  }
 }

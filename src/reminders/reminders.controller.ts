@@ -36,6 +36,8 @@ export class RemindersController {
 
     const displayedReminderData = {
       id: newReminder.id,
+      title: newReminder.title,
+      userId: newReminder.userId,
       description: newReminder.description,
       created_at: newReminder.createdAt,
     };
@@ -79,6 +81,7 @@ export class RemindersController {
         'sorry, no data found related to the requested user',
       );
     }
+    return reminders;
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

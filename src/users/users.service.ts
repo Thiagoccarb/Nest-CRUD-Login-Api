@@ -56,7 +56,13 @@ export class UsersService {
   }
 
   async update(user: UpdateUserDto) {
-    const id = user.id;
-    await this.userModel.update({ ...user }, { where: { id } });
+    try {
+      const id = user.id;
+      await this.userModel.update({ ...user }, { where: { id } });
+    } catch (err) {
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        throw new ForbiddenException('Credentials taken');
+      }
+    }
   }
 }

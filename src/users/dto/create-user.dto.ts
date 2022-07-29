@@ -8,6 +8,6 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsEmail()
+  @IsEmail({}, { message: 'invalid e-mail format' })
   readonly email: string;
 }

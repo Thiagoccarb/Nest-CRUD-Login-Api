@@ -7,6 +7,7 @@ import {
   HttpStatus,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -43,16 +44,27 @@ export class RemindersController {
   }
 
   @Patch(':id')
-  async selectReminder(@Param('id') id: string, @GetUser() user: User) {
-    return this.remindersService.selectReminder(Number(id), Number(user.id));
+  async selectReminder(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+    @GetUser() user: User,
+  ) {
+    return this.remindersService.selectReminder(id, user.id);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @GetUser() user: User) {
-    const existingUser = await this.remindersService.findOne(
-      Number(id),
-      Number(user.id),
-    );
+  async findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+    @GetUser() user: User,
+  ) {
+    const existingUser = await this.remindersService.findOne(id, user.id);
     if (!existingUser) {
       throw new NotFoundException('user not found');
     }
@@ -61,7 +73,7 @@ export class RemindersController {
 
   @Get()
   async findAll(@GetUser() user: User) {
-    const reminders = await this.remindersService.findAll(Number(user.id));
+    const reminders = await this.remindersService.findAll(user.id);
     if (!reminders.length) {
       throw new NotFoundException(
         'sorry, no data found related to the requested user',
@@ -71,7 +83,14 @@ export class RemindersController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async removeReminder(@Param('id') id: string, @GetUser() user: User) {
-    return this.remindersService.removeReminder(Number(id), Number(user.id));
+  async removeReminder(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+    @GetUser() user: User,
+  ) {
+    return this.remindersService.removeReminder(id, Number(user.id));
   }
 }

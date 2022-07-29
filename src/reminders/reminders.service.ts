@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { Reminder } from 'src/entities/reminder.entity';
+import { CreateReminderDto } from './dto/create-reminder';
 
 @Injectable()
 export class RemindersService {
@@ -20,6 +21,10 @@ export class RemindersService {
 
   async findAll(userId: number) {
     return this.reminderModel.findAll({ where: { userId }, raw: true });
+  }
+
+  async update(reminder: CreateReminderDto, userId: number) {
+    return this.reminderModel.update({ ...reminder }, { where: { userId } });
   }
 
   async selectReminder(id: number, userId: number) {

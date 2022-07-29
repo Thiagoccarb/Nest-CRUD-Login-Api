@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -95,5 +96,20 @@ export class RemindersController {
     @GetUser() user: User,
   ) {
     return this.remindersService.removeReminder(id, Number(user.id));
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Put(':id')
+  async update(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+    @GetUser() user: User,
+    @Body() reminder: CreateReminderDto,
+  ) {
+    const userId = user.id;
+    await this.remindersService.update(reminder, userId);
   }
 }

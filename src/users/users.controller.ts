@@ -7,6 +7,9 @@ import {
   HttpStatus,
   Get,
   UseGuards,
+  Param,
+  ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import * as argon from 'argon2';
 
@@ -51,5 +54,25 @@ export class UsersController {
   @Get('users')
   findAll() {
     return this.usersService.findAll();
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('users/:id')
+  async update(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+    @Body() user: CreateUserDto,
+  ) {
+    const hash = await argon.hash(user.password);
+    const updatedUserData = {
+      email: user.email,
+      hash,
+      id,
+    };
+    return this.usersService.update(updatedUserData);
   }
 }

@@ -8,6 +8,7 @@ import { User } from 'src/entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Constants } from 'src/enums/constant';
 import { UserWithID } from './dto/user-dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -52,5 +53,10 @@ export class UsersService {
 
   async findAll() {
     return this.userModel.findAll({ raw: true });
+  }
+
+  async update(user: UpdateUserDto) {
+    const id = user.id;
+    await this.userModel.update({ ...user }, { where: { id } });
   }
 }

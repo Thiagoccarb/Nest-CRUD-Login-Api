@@ -3,7 +3,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 
 import { RemindersService } from './reminders.service';
 import { RemindersController } from './reminders.controller';
-import { Reminder } from 'src/entities/reminder.entity';
+import { Reminder } from '../entities/reminder.entity';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({

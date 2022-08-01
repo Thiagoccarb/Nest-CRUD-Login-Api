@@ -4,9 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/sequelize';
 import * as argon from 'argon2';
 
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Constants } from 'src/enums/constant';
+import { Constants } from '../enums/constant';
 import { UserWithID } from './dto/user-dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

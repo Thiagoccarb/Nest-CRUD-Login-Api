@@ -10,6 +10,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Delete,
 } from '@nestjs/common';
 import * as argon from 'argon2';
 
@@ -74,5 +75,18 @@ export class UsersController {
       id,
     };
     return this.usersService.update(updatedUserData);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('users/:id')
+  async remove(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ) {
+    return this.usersService.remove(id);
   }
 }

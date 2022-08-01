@@ -67,14 +67,14 @@ describe('UserService', () => {
 
   describe('findAll()', () => {
     const id = 1;
-    it('should return an array of users', async () => {
+    it('should return an array of reminders', async () => {
       const reminders = await service.findAll(id);
       expect(reminders).toEqual(remindersArray);
     });
   });
 
   describe('findOne()', () => {
-    it('should return an array of users', async () => {
+    it('should return one reminder', async () => {
       const reminder = await service.findOne(userId, id);
       expect(reminder).toEqual(reminder);
     });
@@ -92,7 +92,7 @@ describe('UserService', () => {
   });
 
   describe('removeReminder()', () => {
-    it('should remove an existing user', async () => {
+    it('should remove an existing reminder', async () => {
       const removeSpy = jest.spyOn(model, 'destroy');
       await service.removeReminder(id, userId);
 

@@ -14,8 +14,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GetUser } from 'src/decorators/getUserData.decorator';
-import { User } from 'src/entities/user.entity';
+import { GetUser } from '../decorators/getUserData.decorator';
+import { User } from '../entities/user.entity';
 import { CreateReminderDto } from './dto/create-reminder';
 import { RemindersService } from './reminders.service';
 
@@ -95,7 +95,7 @@ export class RemindersController {
     id: number,
     @GetUser() user: User,
   ) {
-    return this.remindersService.removeReminder(id, Number(user.id));
+    return this.remindersService.removeReminder(id, user.id);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

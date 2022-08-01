@@ -65,4 +65,8 @@ export class UsersService {
       }
     }
   }
+
+  async remove(id: number) {
+    return this.userModel.destroy({ where: { id } });
+  }
 }

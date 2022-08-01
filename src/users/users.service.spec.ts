@@ -49,6 +49,7 @@ describe('UserService', () => {
             create: jest.fn(() => user),
             update: jest.fn(),
             findOne: jest.fn(() => user),
+            destroy: jest.fn(),
           },
         },
       ],
@@ -57,9 +58,10 @@ describe('UserService', () => {
     service = module.get<UsersService>(UsersService);
     model = module.get<typeof User>(getModelToken(User));
   });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('compile', () => {
+    it('should be defined', () => {
+      expect(service).toBeDefined();
+    });
   });
 
   describe('create()', () => {
@@ -102,6 +104,16 @@ describe('UserService', () => {
         { ...updatedUser },
         { where: { id: updatedUser.id } },
       );
+    });
+  });
+
+  describe('remove()', () => {
+    it('should remove an existing user', async () => {
+      const id = 1;
+      const removeSpy = jest.spyOn(model, 'destroy');
+      await service.remove(id);
+
+      expect(removeSpy).toHaveBeenCalledWith({ where: { id } });
     });
   });
 });

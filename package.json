@@ -6,10 +6,11 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "create-db-test": "NODE_ENV=test npx sequelize db:create",
+    "create-db-test": "NODE_ENV=test npx sequelize db:create  && npx sequelize db:migrate",
     "create-db": "NODE_ENV=development npx sequelize db:create",
     "drop-db": "NODE_ENV=development npx sequelize db:drop",
     "drop-db-test": "NODE_ENV=test npx sequelize db:drop",
+    "pretest": "NODE_ENV=test npx sequelize db:drop && NODE_ENV=test npx sequelize db:create  && npx sequelize db:migrate",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -22,7 +23,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "NODE_ENV=test jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -41,7 +42,8 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "sequelize-typescript": "^2.1.3"
+    "sequelize-typescript": "^2.1.3",
+    "shelljs": "^0.8.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -51,6 +53,7 @@
     "@types/jest": "28.1.4",
     "@types/node": "^16.0.0",
     "@types/passport-jwt": "^3.0.6",
+    "@types/shelljs": "^0.8.11",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",

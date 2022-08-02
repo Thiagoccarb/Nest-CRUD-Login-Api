@@ -6,7 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "create-db": "npx sequelize db:create",
+    "create-db-test": "NODE_ENV=test npx sequelize db:create",
+    "create-db": "NODE_ENV=development npx sequelize db:create",
+    "drop-db": "NODE_ENV=development npx sequelize db:drop",
+    "drop-db-test": "NODE_ENV=test npx sequelize db:drop",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

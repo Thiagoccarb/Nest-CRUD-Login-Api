@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { Reminder } from '../entities/reminder.entity';
-import { CreateReminderDto } from './dto/create-reminder';
+import { CreateReminderDto } from './dto/create-reminder.dto';
 
 @Injectable()
 export class RemindersService {

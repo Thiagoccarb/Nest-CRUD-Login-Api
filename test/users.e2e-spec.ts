@@ -7,7 +7,7 @@ import { User } from '../src/entities/user.entity';
 import { Reminder } from '../src/entities/reminder.entity';
 import { AppModule } from './../src/app.module';
 import { CreateUserDto } from '../src/users/dto/create-user.dto';
-import { CreateReminderDto } from '../src/reminders/dto/create-reminder';
+import { CreateReminderDto } from '../src/reminders/dto/create-reminder.dto';
 
 describe('app (e2e)', () => {
   const errorUsers = [

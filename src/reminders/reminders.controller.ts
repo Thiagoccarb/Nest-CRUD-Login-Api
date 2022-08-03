@@ -16,7 +16,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../decorators/getUserData.decorator';
 import { User } from '../entities/user.entity';
-import { CreateReminderDto } from './dto/create-reminder';
+import { CreateReminderDto } from './dto/create-reminder.dto';
 import { RemindersService } from './reminders.service';
 
 @UseGuards(AuthGuard('jwt'))

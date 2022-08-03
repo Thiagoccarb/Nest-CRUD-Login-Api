@@ -28,12 +28,16 @@ export class UsersService {
       where: { email: user.email },
       raw: true,
     })) as UserWithID | null;
+    if (!existingUser) {
+      throw new ForbiddenException('Invalid credentials');
+    }
+
     const passwordMatches = await argon.verify(
-      existingUser?.hash || '',
+      existingUser?.hash,
       user.password,
     );
 
-    if (!existingUser || !passwordMatches) {
+    if (!passwordMatches) {
       throw new ForbiddenException('Invalid credentials');
     }
     return this.signToken(existingUser?.id, existingUser.email);
@@ -51,9 +55,9 @@ export class UsersService {
     return { token };
   }
 
-  async findAll() {
-    return this.userModel.findAll({ raw: true });
-  }
+  // async findAll() {
+  //   return this.userModel.findAll({ raw: true });
+  // }
 
   async update(user: UpdateUserDto) {
     try {

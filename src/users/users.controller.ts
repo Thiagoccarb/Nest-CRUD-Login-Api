@@ -5,7 +5,7 @@ import {
   ForbiddenException,
   HttpCode,
   HttpStatus,
-  Get,
+  // Get,
   UseGuards,
   Param,
   ParseIntPipe,
@@ -51,11 +51,11 @@ export class UsersController {
     return this.usersService.signIn(user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('users')
-  findAll() {
-    return this.usersService.findAll();
-  }
+  // @UseGuards(AuthGuard('jwt'))
+  // @Get('users')
+  // findAll() {
+  //   return this.usersService.findAll();
+  // }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('jwt'))

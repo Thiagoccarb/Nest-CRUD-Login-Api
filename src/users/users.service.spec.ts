@@ -70,12 +70,12 @@ describe('UserService', () => {
     });
   });
 
-  describe('findAll()', () => {
-    it('should return an array of users', async () => {
-      const users = await service.findAll();
-      expect(users).toEqual(usersArray);
-    });
-  });
+  // describe('findAll()', () => {
+  //   it('should return an array of users', async () => {
+  //     const users = await service.findAll();
+  //     expect(users).toEqual(usersArray);
+  //   });
+  // });
 
   describe('signIn()', () => {
     it('should return a token', async () => {

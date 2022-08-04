@@ -13,6 +13,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import * as argon from 'argon2';
+import { ApiParam, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,7 +22,22 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
+  @ApiTags('Users')
+  @ApiBody({
+    type: CreateUserDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'A correct body has been provided',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'An existing email is provided',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'An invalid body is provided',
+  })
   @Post('users')
   async create(@Body() user: CreateUserDto) {
     try {
@@ -45,6 +61,23 @@ export class UsersController {
     }
   }
 
+  @ApiTags('Users')
+  @ApiBody({
+    type: CreateUserDto,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'A correct login has been provided',
+    type: 'string',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'An non existing email is provided',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'An invalid login has been provided',
+  })
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async signIn(@Body() user: CreateUserDto) {
@@ -57,6 +90,21 @@ export class UsersController {
   //   return this.usersService.findAll();
   // }
 
+  @ApiTags('Users')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a user that exists in the database',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'An user status has been successfully updated',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'An invalid id (string)',
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('jwt'))
   @Patch('users/:id')
@@ -77,6 +125,21 @@ export class UsersController {
     return this.usersService.update(updatedUserData);
   }
 
+  @ApiTags('Users')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a user that exists in the database',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'An user has been successfully removed',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'A post with invalid id (string),',
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard('jwt'))
   @Delete('users/:id')

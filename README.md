@@ -24,7 +24,7 @@
 
 ## Description
 
-An CRUD API created using Nest framework that features Creation of Users and password Reminders through Sequelize ORM.
+A CRUD API created using Nest framework that features Creation of Users and password Reminders through Sequelize ORM.
 
 ## Features
 

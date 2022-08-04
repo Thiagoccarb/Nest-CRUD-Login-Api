@@ -14,6 +14,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiParam, ApiResponse, ApiBody, ApiTags } from '@nestjs/swagger';
+
 import { GetUser } from '../decorators/getUserData.decorator';
 import { User } from '../entities/user.entity';
 import { CreateReminderDto } from './dto/create-reminder.dto';
@@ -24,6 +26,18 @@ import { RemindersService } from './reminders.service';
 export class RemindersController {
   constructor(private readonly remindersService: RemindersService) {}
 
+  @ApiTags('Reminders')
+  @ApiBody({
+    type: CreateReminderDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'A correct body has been provided',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'An invalid body is provided',
+  })
   @Post()
   async create(@Body() reminder: CreateReminderDto, @GetUser() user: User) {
     const { title, description } = reminder;
@@ -46,6 +60,21 @@ export class RemindersController {
     return displayedReminderData;
   }
 
+  @ApiTags('Reminders')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a reminder that exists in the database',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'A reminder has been successfully updated',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'An invalid id (string)',
+  })
   @Patch(':id')
   async selectReminder(
     @Param(
@@ -58,6 +87,26 @@ export class RemindersController {
     return this.remindersService.selectReminder(id, user.id);
   }
 
+  @ApiTags('Reminders')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a reminder that exists in the database',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'An object typeof Reminder',
+    type: CreateReminderDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'An invalid id (non existing reminder)',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'An invalid id (string)',
+  })
   @Get(':id')
   async findOne(
     @Param(
@@ -74,6 +123,15 @@ export class RemindersController {
     return existingUser;
   }
 
+  @ApiTags('Reminders')
+  @ApiResponse({
+    status: 200,
+    description: 'An array of reminders object',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No reminder registered yet with the userId',
+  })
   @Get()
   async findAll(@GetUser() user: User) {
     const reminders = await this.remindersService.findAll(user.id);
@@ -85,6 +143,21 @@ export class RemindersController {
     return reminders;
   }
 
+  @ApiTags('Reminders')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a reminder that exists in the database',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'An reminder has been successfully removed',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'An invalid id (string),',
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   async removeReminder(
@@ -98,6 +171,21 @@ export class RemindersController {
     return this.remindersService.removeReminder(id, user.id);
   }
 
+  @ApiTags('Reminders')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a reminder that exists in the database',
+    type: Number,
+  })
+  @ApiResponse({
+    status: 204,
+    description: 'An reminder has been successfully updated',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'An invalid id (string)',
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Put(':id')
   async update(
